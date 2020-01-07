@@ -1,7 +1,7 @@
 package com.web.mvc.entity;
 
 public class DiscountCode {
-   private String discountCode;
+    private String discountCode;
     private double rate;
 
     public String getDiscountCode() {
@@ -18,6 +18,10 @@ public class DiscountCode {
 
     public void setRate(double rate) {
         this.rate = rate;
+    }
+    
+    public String getLabel() { // 提供給下拉選單使用
+        return discountCode + " : " + rate;
     }
 
     @Override
