@@ -1,12 +1,13 @@
 package com.web.mvc.controller;
 
+
+import com.web.mvc.entity.Customer;
 import com.web.mvc.entity.DiscountCode;
-import com.web.mvc.entity.MicroMarket;
 import com.web.mvc.repository.spec.CustomerDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,8 +17,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/micro_market")
-public class MicroMarketController {
+@RequestMapping("/customer")
+public class CustomerController {
     
     @Autowired
     @Qualifier("customerDao")
@@ -25,36 +26,40 @@ public class MicroMarketController {
     
     @GetMapping("/input")
     public String input(Model model) {
-        model.addAttribute("po", new MicroMarket());
-        model.addAttribute("list", dao.queryMicroMarket());
+        model.addAttribute("po", new Customer());
+        model.addAttribute("list", dao.queryCustomer());
+        model.addAttribute("list_dc", dao.queryDiscountCode());
+        model.addAttribute("list_mm", dao.queryMicroMarket());
         model.addAttribute("_method", "POST");
-        return "micro_market";
+        return "customer";
     }
     
-    @GetMapping("/{code}")
-    public String get(@PathVariable("code") String code, Model model) {
-        MicroMarket mm = dao.getMicroMarket(code);
-        model.addAttribute("po", mm);
-        model.addAttribute("list", dao.queryMicroMarket());
+    @GetMapping("/{id}")
+    public String get(@PathVariable("id") Integer id, Model model) {
+        Customer customer = dao.getCustomer(id);
+        model.addAttribute("po", customer);
+        model.addAttribute("list", dao.queryCustomer());
+        model.addAttribute("list_dc", dao.queryDiscountCode());
+        model.addAttribute("list_mm", dao.queryMicroMarket());
         model.addAttribute("_method", "PUT");
-        return "micro_market";
+        return "customer";
     }
     
     @PostMapping("/")
-    public String save(@ModelAttribute MicroMarket mm) {
-        dao.saveMicroMarket(mm);
+    public String save(@ModelAttribute Customer customer) {
+        dao.saveCustomer(customer);
         return "redirect: ./input";
     }
     
     @PutMapping("/")
-    public String update(@ModelAttribute MicroMarket mm) {
-        dao.updateMicroMarket(mm);
+    public String update(@ModelAttribute Customer customer) {
+        dao.updateCustomer(customer);
         return "redirect: ./input";
     }
-    
-    @DeleteMapping("/{code}")
-    public String delete(@PathVariable("code") String code) {
-        dao.deleteMicroMarket(code);
+   
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") Integer id) {
+        dao.deleteCustomer(id);
         return "redirect: ./input";
     }
     

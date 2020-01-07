@@ -1,41 +1,24 @@
 package com.web.mvc.entity;
 
-public class Customer {
-    private Integer customerId;
-    private String discountCode;
-    private String zip;
+public class Manufacturer {
+    private Integer manufacturerId;
     private String name;
     private String addressline1;
     private String addressline2;
     private String city;
     private String state;
+    private String zip;
     private String phone;
     private String fax;
     private String email;
-    private Integer creditLimit;
+    private String rep; // 製造商代表
 
-    public Integer getCustomerId() {
-        return customerId;
+    public Integer getManufacturerId() {
+        return manufacturerId;
     }
 
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
-    }
-
-    public String getDiscountCode() {
-        return discountCode;
-    }
-
-    public void setDiscountCode(String discountCode) {
-        this.discountCode = discountCode;
-    }
-
-    public String getZip() {
-        return zip;
-    }
-
-    public void setZip(String zip) {
-        this.zip = zip;
+    public void setManufacturerId(Integer manufacturerId) {
+        this.manufacturerId = manufacturerId;
     }
 
     public String getName() {
@@ -78,6 +61,14 @@ public class Customer {
         this.state = state;
     }
 
+    public String getZip() {
+        return zip;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
+    }
+
     public String getPhone() {
         return phone;
     }
@@ -102,12 +93,13 @@ public class Customer {
         this.email = email;
     }
 
-    public Integer getCreditLimit() {
-        return creditLimit;
+    public String getRep() {
+        return rep;
     }
 
-    public void setCreditLimit(Integer creditLimit) {
-        this.creditLimit = creditLimit;
+    public void setRep(String rep) {
+        this.rep = rep;
     }
+    
     
 }
