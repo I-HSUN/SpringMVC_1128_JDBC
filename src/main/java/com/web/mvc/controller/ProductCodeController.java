@@ -1,8 +1,8 @@
 package com.web.mvc.controller;
 
-
-import com.web.mvc.entity.DiscountCode;
+import com.web.mvc.entity.ProductCode;
 import com.web.mvc.repository.spec.CustomerDao;
+import com.web.mvc.repository.spec.ProductDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -16,47 +16,52 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/discount_code")
-public class DiscountCodeController {
+@RequestMapping("/product_code")
+public class ProductCodeController {
+
+    @Autowired
+    @Qualifier("productDao")
+    private ProductDao dao;
     
     @Autowired
     @Qualifier("customerDao")
-    CustomerDao dao;
+    private CustomerDao customerDao;
     
     @GetMapping("/input")
-    public String input(Model model) {
-        model.addAttribute("po", new DiscountCode());
-        model.addAttribute("list", dao.queryDiscountCode());
+    public String query(Model model) {
+        ProductCode po = new ProductCode();
+        model.addAttribute("po", po);
+        model.addAttribute("list", dao.queryProductCode());
+        model.addAttribute("list_dc", customerDao.queryDiscountCode());
         model.addAttribute("_method", "POST");
-        return "discount_code";
+        return "product_code";
     }
-    
+
     @GetMapping("/{code}")
     public String get(@PathVariable("code") String code, Model model) {
-        DiscountCode dc = dao.getDiscountCode(code);
-        model.addAttribute("po", dc);
-        model.addAttribute("list", dao.queryDiscountCode());
+        model.addAttribute("po", dao.getProductCode(code));
+        model.addAttribute("list", dao.queryProductCode());
+        model.addAttribute("list_dc", customerDao.queryDiscountCode());
         model.addAttribute("_method", "PUT");
-        return "discount_code";
+        return "product_code";
     }
-    
+
     @PostMapping("/")
-    public String save(@ModelAttribute DiscountCode dc) {
-        dao.saveDiscountCode(dc);
+    public String post(@ModelAttribute ProductCode pc) {
+        dao.saveProductCode(pc);
         return "redirect:./input";
     }
-    
+
     @PutMapping("/")
-    public String update(@ModelAttribute DiscountCode dc) {
-        dao.updateDiscountCode(dc);
+    public String put(@ModelAttribute ProductCode pc) {
+        dao.updateProductCode(pc);
         return "redirect:./input";
     }
-    
+
     @DeleteMapping("/{code}")
     public String delete(@PathVariable("code") String code) {
-        dao.deleteDiscountCode(code);
+        dao.deleteProductCode(code);
         return "redirect:./input";
     }
-    
-    
+
 }

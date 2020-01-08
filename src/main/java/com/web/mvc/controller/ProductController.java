@@ -1,7 +1,7 @@
 package com.web.mvc.controller;
 
-import com.web.mvc.entity.Customer;
-import com.web.mvc.repository.spec.CustomerDao;
+import com.web.mvc.entity.Product;
+import com.web.mvc.repository.spec.ProductDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -15,51 +15,52 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/customer")
-public class CustomerController {
-    
-    @Autowired
-    @Qualifier("customerDao")
-    CustomerDao dao;
-    
+@RequestMapping("/product")
+public class ProductController {
+
+   @Autowired
+    @Qualifier("productDao")
+    private ProductDao dao;
+
     @GetMapping("/input")
-    public String input(Model model) {
-        model.addAttribute("po", new Customer());
-        model.addAttribute("list", dao.queryCustomer());
-        model.addAttribute("list_dc", dao.queryDiscountCode());
-        model.addAttribute("list_mm", dao.queryMicroMarket());
+    public String query(Model model) {
+        Product po = new Product();
+        model.addAttribute("po", po);
+        model.addAttribute("list", dao.queryProduct());
+        model.addAttribute("list_mf", dao.queryManufacturer());
+        model.addAttribute("list_pc", dao.queryProductCode());
         model.addAttribute("_method", "POST");
-        return "customer";
+        return "product";
     }
-    
+
     @GetMapping("/{id}")
     public String get(@PathVariable("id") Integer id, Model model) {
-        Customer customer = dao.getCustomer(id);
-        model.addAttribute("po", customer);
-        model.addAttribute("list", dao.queryCustomer());
-        model.addAttribute("list_dc", dao.queryDiscountCode());
-        model.addAttribute("list_mm", dao.queryMicroMarket());
+        model.addAttribute("po", dao.getProduct(id));
+        model.addAttribute("list", dao.queryProduct());
+        model.addAttribute("list_mf", dao.queryManufacturer());
+        model.addAttribute("list_pc", dao.queryProductCode());
+        model.addAttribute("page", "product");
         model.addAttribute("_method", "PUT");
-        return "customer";
+        return "product";
     }
-    
+
     @PostMapping("/")
-    public String save(@ModelAttribute Customer customer) {
-        dao.saveCustomer(customer);
+    public String post(@ModelAttribute Product p) {
+        dao.saveProduct(p);
         return "redirect:./input";
     }
-    
+
     @PutMapping("/")
-    public String update(@ModelAttribute Customer customer) {
-        dao.updateCustomer(customer);
+    public String put(@ModelAttribute Product p) {
+        dao.updateProduct(p);
         return "redirect:./input";
     }
-    
+
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") Integer id) {
-        dao.deleteCustomer(id);
+        dao.deleteProduct(id);
         return "redirect:./input";
     }
-    
-    
+
+
 }
